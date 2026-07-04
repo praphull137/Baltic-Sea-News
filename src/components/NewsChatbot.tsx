@@ -6,7 +6,7 @@ import { topics, getTopicById } from '@/data/topics';
 import { getNewsByFilters } from '@/data/news';
 import { getCountryProfile } from '@/data/countryProfiles';
 import { getFactCheckOfTheDay } from '@/data/factChecks';
-import { getPartiesByCountry } from '@/data/politicalParties';
+import { getPartiesByCountry, getIssuesByCountry, getPositionsForParty } from '@/data/parties';
 import { askGroq, GroqMessage } from '@/lib/groq';
 
 interface ChatMessage {
@@ -29,7 +29,7 @@ const quickPrompts = [
 
 const SYSTEM_PROMPT_BASE = `You are "Ask Baltic Sea News", the assistant embedded in Baltic Sea News — an AI-powered news verification platform covering the Baltic and Nordic region (Latvia, Lithuania, Estonia, Poland, Germany, Denmark, Sweden, Finland, Norway, Iceland).
 
-Answer using ONLY the DATA CONTEXT provided below. It is the platform's actual dataset (news, fact checks, political party positions) — all illustrative demo content, not real reporting. If asked, be upfront that it's a demo dataset. If something isn't covered in the context, say you don't have that on file rather than inventing an answer. Keep replies conversational and concise (2-4 sentences), and mention country flags/names naturally when relevant.`;
+Answer using ONLY the DATA CONTEXT provided below. The news and fact-check items are illustrative demo content, not real reporting — say so if asked. Political party positions, however, are real and sourced from official manifestos, party websites, and parliamentary records; when citing one, mention the source is on file. If something isn't covered in the context, say you don't have that on file rather than inventing an answer — this includes party positions marked "unknown" or "No Clear Position", which must be reported as not having a confirmed position, never guessed. Keep replies conversational and concise (2-4 sentences), and mention country flags/names naturally when relevant.`;
 
 // Builds a compact, structured snapshot of the platform's own data so the
 // LLM answers are grounded in what's actually in the app, not hallucinated.
@@ -71,15 +71,22 @@ const buildDataContext = (countryId: string | null, topicId: string | null): str
 
   if (country) {
     const parties = getPartiesByCountry(country.id);
+    const issues = getIssuesByCountry(country.id);
     if (parties.length > 0) {
-      lines.push(`Political parties tracked for ${country.name}: ${parties.map((p) => `${p.name} (${p.descriptor})`).join(' | ')}.`);
+      lines.push(`Real political parties tracked for ${country.name}: ${parties.map((p) => `${p.name} (${p.shortName})`).join(' | ')}.`);
+      // If a specific global topic is in focus, only surface positions on the
+      // country issue(s) that map to it; otherwise include everything.
+      const relevantIssueIds = topic
+        ? issues.filter((i) => i.topicId === topic.id).map((i) => i.id)
+        : issues.map((i) => i.id);
       parties.forEach((p) => {
-        const relevantStances = topic
-          ? p.stances.filter((s) => s.topicId === topic.id)
-          : p.stances;
-        relevantStances.forEach((s) => {
-          const stanceTopic = getTopicById(s.topicId);
-          lines.push(`- ${p.name} on ${stanceTopic?.label ?? s.topicId}: ${s.stance} — ${s.note}`);
+        const positions = getPositionsForParty(country.id, p.id).filter((pos) =>
+          relevantIssueIds.includes(pos.issueId)
+        );
+        positions.forEach((pos) => {
+          const issue = issues.find((i) => i.id === pos.issueId);
+          const sourceNote = pos.source ? ` (source on file)` : '';
+          lines.push(`- ${p.shortName} on ${issue?.label ?? pos.issueId}: ${pos.stance} — ${pos.evidence}${sourceNote}`);
         });
       });
     }

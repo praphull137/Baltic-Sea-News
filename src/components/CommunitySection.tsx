@@ -312,6 +312,12 @@ const CommunitySection: React.FC<CommunitySectionProps> = ({
               </CardContent>
             </Card>
 
+            {visibleThreads.length === 0 && (
+              <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-sm text-gray-500">
+                No discussions yet for this filter — be the first to start one above.
+              </div>
+            )}
+
             <div className="space-y-4">
               {visibleThreads.map((thread) => {
                 const country = countries.find((c) => c.id === thread.country);
