@@ -1,7 +1,7 @@
 import React from 'react';
 import { Users, TrendingUp, Landmark, Vote, Tag, ShieldCheck, Newspaper } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getCountryById, countries } from '@/data/countries';
+import { getCountryById, countries, getCountryFlagSrc } from '@/data/countries';
 import { getCountryProfile } from '@/data/countryProfiles';
 import { getArticlesThisWeek, getActiveTopicCount, newsData } from '@/data/news';
 import { getFactChecksThisWeek, factChecksData } from '@/data/factChecks';
@@ -34,6 +34,7 @@ const formatDate = (date: string) =>
 const CountryProfileCard: React.FC<CountryProfileCardProps> = ({ selectedCountry }) => {
   const country = getCountryById(selectedCountry);
   const profile = getCountryProfile(selectedCountry);
+  const flagSrc = getCountryFlagSrc(selectedCountry);
 
   if (!country || !profile) {
     return (
@@ -58,7 +59,11 @@ const CountryProfileCard: React.FC<CountryProfileCardProps> = ({ selectedCountry
     <Card className="border border-gray-200 bg-white">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-lg text-[#03353E]">
-          <span className="text-2xl leading-none">{country.flag}</span>
+          {flagSrc ? (
+            <img src={flagSrc} alt="" className="h-7 w-10 rounded-sm object-cover shadow-sm" />
+          ) : (
+            <span className="text-2xl leading-none">{country.flag}</span>
+          )}
           {country.name.toUpperCase()}
         </CardTitle>
       </CardHeader>

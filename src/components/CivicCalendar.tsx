@@ -10,7 +10,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { getNewsByDate } from '@/data/news';
-import { getCountryById } from '@/data/countries';
+import { getCountryById, getCountryFlagSrc } from '@/data/countries';
 import { countryProfiles, getCountryProfile, CivicEvent } from '@/data/countryProfiles';
 
 interface CivicCalendarProps {
@@ -120,11 +120,27 @@ const CivicCalendar: React.FC<CivicCalendarProps> = ({ selectedCountry }) => {
             <div className="max-h-72 space-y-3 overflow-y-auto pr-1">
               {archive.map((item) => {
                 const country = getCountryById(item.country);
+                const flagSrc = getCountryFlagSrc(item.country);
                 return (
                   <div key={item.id} className="rounded-lg border border-gray-200 p-3">
                     <div className="mb-1 flex items-center justify-between text-xs text-gray-500">
                       <span className="font-medium text-[#5C8C85]">
-                        {country ? `${country.flag} ${country.name}` : item.country}
+                        {country ? (
+                          <>
+                            {flagSrc ? (
+                              <img
+                                src={flagSrc}
+                                alt=""
+                                className="mr-1 inline-block h-4 w-6 rounded-sm object-cover align-[-2px]"
+                              />
+                            ) : (
+                              `${country.flag} `
+                            )}
+                            {country.name}
+                          </>
+                        ) : (
+                          item.country
+                        )}
                       </span>
                       <span>{item.category}</span>
                     </div>

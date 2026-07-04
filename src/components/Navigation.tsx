@@ -10,7 +10,7 @@ interface NavigationProps {
 }
 
 const navLinks = [
-  { href: '#home', label: 'Home' },
+  { href: '#map', label: 'Map' },
   { href: '#services', label: 'Verify News' },
   { href: '#dashboard', label: 'Story Timeline' },
   { href: '#mission', label: 'Sources' },
@@ -40,16 +40,16 @@ const Navigation: React.FC<NavigationProps> = ({ onAuthClick, onDemoClick }) => 
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <motion.button
-            onClick={() => scrollToSection('#home')}
+            onClick={() => scrollToSection('#map')}
             className="flex items-center space-x-2"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05 }}   
             transition={{ duration: 0.2 }}
           >
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#5C8C85]">
               <Waves className="h-5 w-5 text-white" />
             </div>
             <span className="text-lg font-bold tracking-tight text-[#03353E]">
-              Baltic Sea News
+              The Baltic See
             </span>
           </motion.button>
 

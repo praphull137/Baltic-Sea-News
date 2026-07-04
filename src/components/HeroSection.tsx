@@ -6,6 +6,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import InteractiveBalticMap from './InteractiveBalticMap';
+import { getCountryById } from '@/data/countries';
 
 interface HeroSectionProps {
   onDemoClick: () => void;
@@ -15,12 +16,6 @@ interface HeroSectionProps {
   onSelectCountry: (id: string) => void;
 }
 
-const stats = [
-  { number: '10K+', label: 'Claims Verified' },
-  { number: '95%', label: 'Verification Accuracy' },
-  { number: '500+', label: 'Trusted Sources' },
-];
-
 const HeroSection: React.FC<HeroSectionProps> = ({
   onDemoClick,
   onVerify,
@@ -29,6 +24,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const [mode, setMode] = useState<'claim' | 'url'>('claim');
   const [inputValue, setInputValue] = useState('');
+  const selectedCountryName = selectedCountry
+    ? getCountryById(selectedCountry)?.name ?? 'this country'
+    : null;
 
   const floatingIcons = [
     { icon: Globe, delay: 0, x: 100, y: 50 },
@@ -40,10 +38,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   ];
 
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center justify-center bg-[#f2e8dc] text-black overflow-hidden dark:bg-[#1f2937] dark:text-gray-300"
-    >
+      <section
+        id="map"
+        className="relative min-h-[calc(100vh-64px)] flex items-center justify-center bg-[#f2e8dc] text-black overflow-hidden pt-20 pb-8 dark:bg-[#1f2937] dark:text-gray-300"
+      >
       {/* Animated Icons */}
       <div className="absolute inset-0 overflow-hidden">
         {floatingIcons.map(({ icon: Icon, delay, x, y }, index) => (
@@ -75,26 +73,45 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="pt-16" />
+      <div className="relative z-10 mx-auto w-full max-w-[1760px] px-4 sm:px-6 lg:px-14">
 
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+        <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center xl:gap-16">
           {/* Left column: hero text, search, CTAs, stats */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-center lg:text-left"
+            className="mx-auto max-w-2xl text-center lg:mx-0 lg:max-w-3xl lg:text-left"
           >
-            <motion.h1 className="text-4xl md:text-6xl font-extrabold mb-6 font-poppins leading-[1.15]">
+            <motion.h1 className="text-4xl md:text-5xl xl:text-[3.4rem] font-extrabold mb-5 font-poppins leading-[1.12]">
               <motion.span
                 className="inline-block text-black dark:text-gray-100"
                 initial={{ opacity: 0, x: -100, rotate: -180 }}
                 animate={{ opacity: 1, x: 0, rotate: 0 }}
                 transition={{ duration: 1, delay: 0.3, type: 'spring', stiffness: 100 }}
               >
-                Verify Facts.
+                Verify Facts
               </motion.span>{' '}
+              {selectedCountryName && (
+                <>
+                <motion.span
+                    className="inline-block mr-2 text-black dark:text-gray-100"
+                    initial={{ opacity: 0, x: -100, rotate: -180 }}
+                    animate={{ opacity: 1, x: 0, rotate: 0 }}
+                    transition={{ duration: 1, delay: 0.35, type: 'spring', stiffness: 100 }}
+                  >
+                    in
+                  </motion.span>
+                  <motion.span
+                    className="inline-block text-[#D1835A] dark:text-[#F0A57A]"
+                    initial={{ opacity: 0, x: -100, rotate: -180 }}
+                    animate={{ opacity: 1, x: 0, rotate: 0 }}
+                    transition={{ duration: 1, delay: 0.4, type: 'spring', stiffness: 100 }}
+                  >
+                    {selectedCountryName}
+                  </motion.span>
+                </>
+              )}{' '}
               <motion.span
                 className="inline-block text-[#1f4f4f] dark:text-teal-400"
                 initial={{ opacity: 0, x: 100, rotate: 180 }}
@@ -114,7 +131,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </motion.h1>
 
             <motion.p
-              className="text-xl md:text-2xl text-gray-800 mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed dark:text-gray-300"
+              className="text-lg md:text-xl text-gray-800 mb-6 max-w-xl mx-auto lg:mx-0 leading-relaxed dark:text-gray-300"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
@@ -207,7 +224,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              {/* <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => onVerify(mode, inputValue.trim() || undefined)}
                   size="lg"
@@ -216,7 +233,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                   Verify News
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-              </motion.div>
+              </motion.div> */}
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
@@ -230,52 +247,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               </motion.div>
             </motion.div>
 
-            {/* Stats */}
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 max-w-xl mx-auto lg:mx-0"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
-            >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  className="text-center bg-white/90 p-5 rounded-xl border border-gray-300 shadow-sm dark:bg-[#111827] dark:border-gray-700"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 1.3 + index * 0.1 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                >
-                  <motion.div
-                    className="text-2xl font-bold text-[#1f4f4f] dark:text-teal-400 mb-1"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.5, delay: 1.5 + index * 0.1, type: 'spring' }}
-                  >
-                    {stat.number}
-                  </motion.div>
-                  <div className="text-gray-700 text-sm font-medium dark:text-gray-300">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
           </motion.div>
 
           {/* Right column: Interactive Baltic & Nordic News Map */}
+          {/* Right column: Interactive Baltic & Nordic News Map */}
           <motion.div
-            className="rounded-2xl border border-gray-300 bg-white/80 p-6 shadow-sm dark:bg-[#111827]/80 dark:border-gray-700"
+            className="flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <h3 className="mb-1 text-lg font-semibold text-[#03353E] dark:text-teal-300">
-              Interactive Baltic &amp; Nordic News Map
-            </h3>
-            <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-              Baltic Region — hover a country for its article count, click to load its
-              latest verified news below.
-            </p>
             <InteractiveBalticMap selected={selectedCountry} onSelect={onSelectCountry} />
           </motion.div>
         </div>

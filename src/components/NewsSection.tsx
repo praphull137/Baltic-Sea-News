@@ -7,7 +7,7 @@ import CivicCalendar from './CivicCalendar';
 import ElectionCountdown from './ElectionCountdown';
 import CountryProfileCard from './CountryProfileCard';
 import TopicChips from './TopicChips';
-import { getCountryById } from '@/data/countries';
+import { getCountryById, getCountryFlagSrc } from '@/data/countries';
 
 interface NewsSectionProps {
   selectedCountry: string | null;
@@ -23,6 +23,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({
   onClearFilter,
 }) => {
   const country = getCountryById(selectedCountry);
+  const flagSrc = getCountryFlagSrc(selectedCountry);
 
   return (
     <section id="news" className="py-20 bg-gray-50 dark:bg-gray-800">
@@ -34,8 +35,23 @@ const NewsSection: React.FC<NewsSectionProps> = ({
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl font-bold text-[#03353E] dark:text-white sm:text-4xl font-poppins mb-4">
-            {country ? `${country.flag} ${country.name} Civic Hub` : 'Baltic & Nordic Civic Hub'}
+          <h2 className="mb-4 flex items-center justify-center gap-3 text-3xl font-bold text-[#03353E] dark:text-white sm:text-4xl font-poppins">
+            {country ? (
+              <>
+                {flagSrc ? (
+                  <img
+                    src={flagSrc}
+                    alt=""
+                    className="h-7 w-10 rounded-sm object-cover shadow-sm"
+                  />
+                ) : (
+                  <span className="text-2xl leading-none">{country.flag}</span>
+                )}
+                <span>{country.name} Civic Hub</span>
+              </>
+            ) : (
+              'Baltic & Nordic Civic Hub'
+            )}
           </h2>
           <motion.div
             className="w-20 h-1 bg-gradient-to-r from-teal-500 to-teal-700 mx-auto mb-8 rounded-full"
