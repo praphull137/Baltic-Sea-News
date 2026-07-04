@@ -6,7 +6,7 @@ import { topics, getTopicById } from '@/data/topics';
 import { getNewsByFilters } from '@/data/news';
 import { getCountryProfile } from '@/data/countryProfiles';
 import { getFactCheckOfTheDay } from '@/data/factChecks';
-import { getPartiesByCountry } from '@/data/politicalParties';
+import { getPartiesByCountry } from '@/data/parties';
 import { askGroq, GroqMessage } from '@/lib/groq';
 import { getCountryFlagSrc } from '@/data/countries';
 
