@@ -38,7 +38,7 @@ const MissionSection = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl font-bold text-[#03353E] sm:text-4xl font-poppins mb-4 tracking-tight">
-            How Baltic Sea News Works
+            How The Baltic See Works
           </h2>
           <motion.div
             className="w-20 h-1 bg-[#5C8C85] mx-auto mb-8 rounded-full"

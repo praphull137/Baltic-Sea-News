@@ -19,3 +19,26 @@ export const countries: Country[] = [
 
 export const getCountryById = (id: string | null) =>
   countries.find((c) => c.id === id) || null;
+
+export const getCountryFlagSrc = (id: string | null) => {
+  const country = getCountryById(id);
+
+  if (!country) return null;
+
+  const iso2: Record<string, string> = {
+    iceland: 'is',
+    norway: 'no',
+    sweden: 'se',
+    finland: 'fi',
+    denmark: 'dk',
+    estonia: 'ee',
+    latvia: 'lv',
+    lithuania: 'lt',
+    poland: 'pl',
+    germany: 'de',
+  };
+
+  const code = iso2[country.id];
+
+  return code ? `https://flagcdn.com/w40/${code}.png` : null;
+};

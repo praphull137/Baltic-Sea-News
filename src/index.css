@@ -454,3 +454,100 @@ input:focus, textarea:focus, select:focus {
     display: none !important;
   }
 }
+
+/* =============================
+   Baltic SVG Map - Clean Version
+   ============================= */
+
+.baltic-svg-map-shell {
+  position: relative;
+  width: 100%;
+  max-width: clamp(460px, 54vw, 640px);
+  margin: 0 auto;
+  overflow: visible;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.country-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(78vh, 640px);
+}
+
+.region-map {
+  min-height: 0;
+}
+
+.map-country {
+  fill: rgba(92, 140, 133, 0.5);
+  stroke: rgba(3, 53, 62, 0.78);
+  stroke-width: 1.1;
+  cursor: pointer;
+  outline: none;
+  transition:
+    fill 180ms ease,
+    stroke 180ms ease,
+    stroke-width 180ms ease,
+    filter 180ms ease;
+}
+
+.map-country:hover,
+.map-country:focus {
+  fill: rgba(209, 131, 90, 0.74);
+  stroke: #03353e;
+  stroke-width: 1.9;
+  filter: drop-shadow(0 8px 14px rgba(3, 53, 62, 0.2));
+}
+
+.map-country.selected {
+  fill: #d1835a;
+  stroke: #03353e;
+  stroke-width: 2.4;
+  filter: drop-shadow(0 10px 16px rgba(3, 53, 62, 0.24));
+}
+
+.dark .map-country {
+  fill: rgba(92, 140, 133, 0.58);
+  stroke: rgba(241, 232, 219, 0.82);
+}
+
+.dark .map-country:hover,
+.dark .map-country:focus,
+.dark .map-country.selected {
+  stroke: #ffffff;
+}
+
+@media (max-width: 1280px) {
+  .baltic-svg-map-shell {
+    max-width: clamp(360px, 40vw, 520px);
+  }
+
+  .country-map {
+    max-height: min(60vh, 520px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .baltic-svg-map-shell {
+    max-width: 500px;
+  }
+
+  .country-map {
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 640px) {
+  .baltic-svg-map-shell {
+    max-width: 360px;
+  }
+
+  .country-map {
+    max-height: 360px;
+  }
+}
