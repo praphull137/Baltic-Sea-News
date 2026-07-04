@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Waves } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -45,9 +45,11 @@ const Navigation: React.FC<NavigationProps> = ({ onAuthClick, onDemoClick }) => 
             whileHover={{ scale: 1.05 }}   
             transition={{ duration: 0.2 }}
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#5C8C85]">
-              <Waves className="h-5 w-5 text-white" />
-            </div>
+            <img
+              src="/images/the_baltic_see_logo.svg"
+              alt="The Baltic See"
+              className="h-9 w-9 rounded-lg object-contain"
+            />
             <span className="text-lg font-bold tracking-tight text-[#03353E]">
               The Baltic See
             </span>
