@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { CalendarDays, ArrowRight, X, ShieldCheck, ShieldAlert, ShieldQuestion, Radio } from 'lucide-react';
 import { getNewsByFilters, FactCheckStatus, Reliability } from '@/data/news';
-import { getCountryById } from '@/data/countries';
+import { getCountryById, getCountryFlagSrc } from '@/data/countries';
 import { getTopicById } from '@/data/topics';
 
 interface NewsGridProps {
@@ -35,6 +35,7 @@ const MAX_ITEMS = 6;
 
 const NewsGrid: React.FC<NewsGridProps> = ({ selectedCountry, selectedTopic, onClearFilter }) => {
   const country = getCountryById(selectedCountry);
+  const countryFlagSrc = getCountryFlagSrc(selectedCountry);
   const topic = getTopicById(selectedTopic);
   const allItems = getNewsByFilters(selectedCountry, selectedTopic)
     .slice()
@@ -50,7 +51,12 @@ const NewsGrid: React.FC<NewsGridProps> = ({ selectedCountry, selectedTopic, onC
           <h3 className="text-2xl font-bold text-[#03353E] font-poppins">
             {country ? (
               <>
-                {country.flag} {country.name} Feed
+                {countryFlagSrc ? (
+                  <img src={countryFlagSrc} alt="" className="inline-block h-6 w-9 rounded-sm align-middle object-cover shadow-sm" />
+                ) : (
+                  <span>{country.flag}</span>
+                )}{' '}
+                {country.name} Feed
               </>
             ) : (
               'All Baltic & Nordic News'
@@ -100,7 +106,22 @@ const NewsGrid: React.FC<NewsGridProps> = ({ selectedCountry, selectedTopic, onC
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <span className="absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold text-[#03353E] shadow-sm">
-                    {itemCountry ? `${itemCountry.flag} ${itemCountry.name}` : item.country}
+                    {itemCountry ? (
+                      <span className="inline-flex items-center gap-1">
+                        {getCountryFlagSrc(itemCountry.id) ? (
+                          <img
+                            src={getCountryFlagSrc(itemCountry.id) as string}
+                            alt=""
+                            className="h-4 w-6 rounded-sm object-cover"
+                          />
+                        ) : (
+                          <span>{itemCountry.flag}</span>
+                        )}
+                        {itemCountry.name}
+                      </span>
+                    ) : (
+                      item.country
+                    )}
                   </span>
                   <span
                     className={`absolute top-3 right-3 h-2.5 w-2.5 rounded-full ${reliabilityMeta[item.reliability]}`}

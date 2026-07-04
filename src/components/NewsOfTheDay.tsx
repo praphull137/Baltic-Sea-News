@@ -2,7 +2,7 @@ import React from 'react';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getNewsOfTheDay } from '@/data/news';
-import { getCountryById } from '@/data/countries';
+import { getCountryById, getCountryFlagSrc } from '@/data/countries';
 
 interface NewsOfTheDayProps {
   selectedCountry?: string | null;
@@ -12,6 +12,7 @@ interface NewsOfTheDayProps {
 const NewsOfTheDay: React.FC<NewsOfTheDayProps> = ({ selectedCountry = null, selectedTopic = null }) => {
   const item = getNewsOfTheDay(selectedCountry, selectedTopic);
   const country = getCountryById(item.country);
+  const flagSrc = getCountryFlagSrc(item.country);
 
   return (
     <Card className="overflow-hidden border border-gray-200 bg-white">
@@ -33,7 +34,12 @@ const NewsOfTheDay: React.FC<NewsOfTheDayProps> = ({ selectedCountry = null, sel
         <div className="mb-2 flex flex-wrap items-center gap-2">
           {country && (
             <span className="inline-block rounded-full bg-[#5C8C85]/10 px-2.5 py-0.5 text-xs font-medium text-[#5C8C85]">
-              {country.flag} {country.name}
+              {flagSrc ? (
+                <img src={flagSrc} alt="" className="mr-1 inline-block h-4 w-6 rounded-sm object-cover align-[-2px]" />
+              ) : (
+                `${country.flag} `
+              )}
+              {country.name}
             </span>
           )}
           <span className="inline-block rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
