@@ -6,9 +6,11 @@ import AiChatModal from './AiChatModal';
 interface AiModalProps {
   isOpen: boolean;
   onClose: () => void;
+  selectedCountry: string | null;
+  selectedTopic: string | null;
 }
 
-const AiModal: React.FC<AiModalProps> = ({ isOpen, onClose }) => {
+const AiModal: React.FC<AiModalProps> = ({ isOpen, onClose, selectedCountry, selectedTopic }) => {
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.95 },
     visible: {
@@ -78,7 +80,7 @@ const AiModal: React.FC<AiModalProps> = ({ isOpen, onClose }) => {
 
               {/* Scrollable Content Area */}
               <div className="relative p-8 overflow-y-auto flex-1">
-                <AiChatModal />
+                <AiChatModal selectedCountry={selectedCountry} selectedTopic={selectedTopic} />
               </div>
             </div>
           </motion.div>

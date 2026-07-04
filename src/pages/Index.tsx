@@ -113,6 +113,8 @@ const Index = () => {
       <AiModal
         isOpen={isAiModalOpen}
         onClose={() => setIsAiModalOpen(false)}
+        selectedCountry={selectedCountry}
+        selectedTopic={selectedTopic}
       />
 
       <VerifyModal
