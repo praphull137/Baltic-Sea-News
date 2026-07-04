@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ShieldCheck, BookOpen } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getFactCheckOfTheDay, Verdict } from '@/data/factChecks';
-import { getCountryById } from '@/data/countries';
+import { getCountryById, getCountryFlagSrc } from '@/data/countries';
 import { getTopicById } from '@/data/topics';
 
 interface FactCheckOfTheDayProps {
@@ -24,6 +24,7 @@ const FactCheckOfTheDay: React.FC<FactCheckOfTheDayProps> = ({
 }) => {
   const factCheck = getFactCheckOfTheDay(selectedCountry, selectedTopic);
   const country = getCountryById(factCheck.country);
+  const flagSrc = getCountryFlagSrc(factCheck.country);
   const topic = getTopicById(factCheck.topic);
   const color = verdictColor[factCheck.verdict];
 
@@ -39,7 +40,12 @@ const FactCheckOfTheDay: React.FC<FactCheckOfTheDayProps> = ({
         <div className="mb-2 flex flex-wrap items-center gap-2">
           {country && (
             <span className="inline-block rounded-full bg-[#5C8C85]/10 px-2.5 py-0.5 text-xs font-medium text-[#5C8C85]">
-              {country.flag} {country.name}
+              {flagSrc ? (
+                <img src={flagSrc} alt="" className="mr-1 inline-block h-4 w-6 rounded-sm object-cover align-[-2px]" />
+              ) : (
+                `${country.flag} `
+              )}
+              {country.name}
             </span>
           )}
           {topic && (

@@ -22,7 +22,7 @@ const Footer = () => {
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#5C8C85]">
                 <Waves className="h-5 w-5 text-white" />
               </div>
-              <span className="text-lg font-bold text-[#03353E]">Baltic Sea News</span>
+              <span className="text-lg font-bold text-[#03353E]">The Baltic See</span>
             </div>
             <p className="text-sm leading-relaxed text-[#5E8E87]">
               Verify Facts. Understand Context. Follow the Story. AI-powered news
@@ -89,7 +89,7 @@ const Footer = () => {
         <div className="border-t border-[#D1835A] mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-[#5E8E87]">
-              © 2026 Baltic Sea News. All rights reserved.
+              © 2026 The Baltic See. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-[#5E8E87] hover:text-[#D1835A] text-sm transition-colors">

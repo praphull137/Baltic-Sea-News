@@ -1,7 +1,7 @@
 import React from 'react';
 import { Vote, ClipboardCheck, CalendarCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getCountryById } from '@/data/countries';
+import { getCountryById, getCountryFlagSrc } from '@/data/countries';
 import { countryProfiles, getCountryProfile } from '@/data/countryProfiles';
 
 interface ElectionCountdownProps {
@@ -32,6 +32,7 @@ const CountdownRow: React.FC<{ icon: React.ElementType; label: string; date: str
 const ElectionCountdown: React.FC<ElectionCountdownProps> = ({ selectedCountry }) => {
   const profile = getCountryProfile(selectedCountry);
   const country = getCountryById(selectedCountry);
+  const flagSrc = getCountryFlagSrc(selectedCountry);
 
   if (!profile || !country) {
     const upcoming = countryProfiles
@@ -56,7 +57,16 @@ const ElectionCountdown: React.FC<ElectionCountdownProps> = ({ selectedCountry }
                 className="flex items-center justify-between border-b border-gray-100 py-2.5 last:border-b-0"
               >
                 <span className="text-sm text-[#03353E]/70">
-                  {c?.flag} {c?.name}
+                  {getCountryFlagSrc(c?.id ?? null) ? (
+                    <img
+                      src={getCountryFlagSrc(c?.id ?? null) as string}
+                      alt=""
+                      className="mr-1 inline-block h-4 w-6 rounded-sm object-cover align-[-2px]"
+                    />
+                  ) : (
+                    `${c?.flag} `
+                  )}
+                  {c?.name}
                 </span>
                 <span className="text-sm font-semibold text-[#03353E]">
                   {daysUntil(p.election.electionDay)} days
@@ -71,13 +81,18 @@ const ElectionCountdown: React.FC<ElectionCountdownProps> = ({ selectedCountry }
 
   return (
     <Card className="border border-gray-200 bg-white">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center text-lg text-[#03353E]">
-          <Vote className="mr-2 h-5 w-5 text-[#D1835A]" />
-          Election Countdown
-        </CardTitle>
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center text-lg text-[#03353E]">
+            <Vote className="mr-2 h-5 w-5 text-[#D1835A]" />
+            Election Countdown
+          </CardTitle>
         <p className="text-sm text-[#03353E]/60">
-          {country.flag} {profile.election.name}
+          {flagSrc ? (
+            <img src={flagSrc} alt="" className="mr-1 inline-block h-4 w-6 rounded-sm object-cover align-[-2px]" />
+          ) : (
+            `${country.flag} `
+          )}
+          {profile.election.name}
         </p>
       </CardHeader>
       <CardContent>

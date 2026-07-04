@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { countries } from '@/data/countries';
+import { countries, getCountryFlagSrc } from '@/data/countries';
 import { topics, getTopicById } from '@/data/topics';
 
 interface Reply {
@@ -199,7 +199,7 @@ const CommunitySection: React.FC<CommunitySectionProps> = ({
           <div className="w-24 h-1 bg-[#D1835A] mx-auto mb-8 rounded-full" />
           <p className="text-lg text-[#03353E] max-w-3xl mx-auto">
             Discuss verified stories, question sources, and compare notes with the
-            Baltic Sea News community.
+            The Baltic See community.
           </p>
         </motion.div>
 
@@ -234,7 +234,16 @@ const CommunitySection: React.FC<CommunitySectionProps> = ({
                       : 'bg-white text-[#5C8C85] border border-[#5C8C85]/30'
                   }`}
                 >
-                  {c.flag} {c.name}
+                  {getCountryFlagSrc(c.id) ? (
+                    <img
+                      src={getCountryFlagSrc(c.id) as string}
+                      alt=""
+                      className="mr-1 inline-block h-4 w-6 rounded-sm object-cover align-[-2px]"
+                    />
+                  ) : (
+                    `${c.flag} `
+                  )}
+                  {c.name}
                 </button>
               ))}
             </div>
@@ -312,6 +321,12 @@ const CommunitySection: React.FC<CommunitySectionProps> = ({
               </CardContent>
             </Card>
 
+            {visibleThreads.length === 0 && (
+              <div className="rounded-xl border border-dashed border-gray-300 bg-white p-10 text-center text-sm text-gray-500">
+                No discussions yet for this filter — be the first to start one above.
+              </div>
+            )}
+
             <div className="space-y-4">
               {visibleThreads.map((thread) => {
                 const country = countries.find((c) => c.id === thread.country);
@@ -325,7 +340,22 @@ const CommunitySection: React.FC<CommunitySectionProps> = ({
                     <CardContent className="p-6">
                       <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-[#5E8E87]">
                         <span className="rounded-full bg-[#5C8C85]/10 px-2.5 py-0.5 font-medium text-[#5C8C85]">
-                          {country ? `${country.flag} ${country.name}` : thread.country}
+                          {country ? (
+                            <>
+                              {getCountryFlagSrc(country.id) ? (
+                                <img
+                                  src={getCountryFlagSrc(country.id) as string}
+                                  alt=""
+                                  className="mr-1 inline-block h-4 w-6 rounded-sm object-cover align-[-2px]"
+                                />
+                              ) : (
+                                `${country.flag} `
+                              )}
+                              {country.name}
+                            </>
+                          ) : (
+                            thread.country
+                          )}
                         </span>
                         {topic && (
                           <span className="rounded-full bg-[#D1835A]/10 px-2.5 py-0.5 font-medium text-[#D1835A]">
@@ -448,7 +478,24 @@ const CommunitySection: React.FC<CommunitySectionProps> = ({
                     <Card className="bg-white rounded-xl">
                       <CardContent className="p-5">
                         <div className="mb-2 flex items-center justify-between text-xs text-[#5E8E87]">
-                          <span>{country ? `${country.flag} ${country.name}` : thread.country}</span>
+                          <span>
+                            {country ? (
+                              <>
+                                {getCountryFlagSrc(country.id) ? (
+                                  <img
+                                    src={getCountryFlagSrc(country.id) as string}
+                                    alt=""
+                                    className="mr-1 inline-block h-4 w-6 rounded-sm object-cover align-[-2px]"
+                                  />
+                                ) : (
+                                  `${country.flag} `
+                                )}
+                                {country.name}
+                              </>
+                            ) : (
+                              thread.country
+                            )}
+                          </span>
                           <span className="flex items-center gap-1 font-semibold text-[#D1835A]">
                             <Heart className="h-3.5 w-3.5 fill-current" />
                             {likes[thread.id] || 0}

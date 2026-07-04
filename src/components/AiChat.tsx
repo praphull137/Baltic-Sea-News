@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Send } from 'lucide-react';
+import { Fish, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const AiChat = () => {
@@ -83,6 +83,18 @@ const AiChat = () => {
 
   const emojis = ['😊', '👍', '❤️', '🎉', '📚', '🌟', '💡', '🚀'];
 
+  const PollyAvatar = () => {
+    return (
+      <motion.div
+        className="relative flex items-center justify-center"
+        whileHover={{ x: 10, y: -2, rotate: 4 }}
+        transition={{ duration: 1.2, ease: 'easeInOut' }}
+      >
+        <Fish className="relative z-10 h-7 w-7 text-white" strokeWidth={1.5} />
+      </motion.div>
+    );
+  };
+
   return (
     <div
       className="rounded-2xl shadow-md h-96 flex flex-col overflow-hidden"
@@ -97,7 +109,10 @@ const AiChat = () => {
           backgroundColor: '#5C8C85',
         }}
       >
-        AI Assistant
+        <div className="flex items-center gap-3">
+          <PollyAvatar />
+          <span>AI Assistant</span>
+        </div>
       </div>
 
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
