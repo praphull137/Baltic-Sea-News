@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Waves } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 const socials = [
   { label: 'LinkedIn', short: 'in' },
@@ -19,9 +19,11 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#5C8C85]">
-                <Waves className="h-5 w-5 text-white" />
-              </div>
+              <img
+                src="/images/the_baltic_see_logo.svg"
+                alt="The Baltic See"
+                className="h-9 w-9 rounded-lg object-contain"
+              />
               <span className="text-lg font-bold text-[#03353E]">The Baltic See</span>
             </div>
             <p className="text-sm leading-relaxed text-[#5E8E87]">

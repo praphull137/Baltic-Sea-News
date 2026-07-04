@@ -6,7 +6,7 @@ import { topics, getTopicById } from '@/data/topics';
 import { getNewsByFilters } from '@/data/news';
 import { getCountryProfile } from '@/data/countryProfiles';
 import { getFactCheckOfTheDay } from '@/data/factChecks';
-import { getPartiesByCountry } from '@/data/parties';
+import { getPartiesByCountry, getIssuesByCountry, getPositionsForParty } from '@/data/parties';
 import { askGroq, GroqMessage } from '@/lib/groq';
 import { getCountryFlagSrc } from '@/data/countries';
 
@@ -94,16 +94,35 @@ const buildDataContext = (countryId: string | null, topicId: string | null): str
   if (country) {
     const parties = getPartiesByCountry(country.id);
     if (parties.length > 0) {
-      lines.push(`Political parties tracked for ${country.name}: ${parties.map((p) => `${p.name} (${p.descriptor})`).join(' | ')}.`);
-      parties.forEach((p) => {
-        const relevantStances = topic
-          ? p.stances.filter((s) => s.topicId === topic.id)
-          : p.stances;
-        relevantStances.forEach((s) => {
-          const stanceTopic = getTopicById(s.topicId);
-          lines.push(`- ${p.name} on ${stanceTopic?.label ?? s.topicId}: ${s.stance} — ${s.note}`);
-        });
-      });
+      lines.push(
+        `Political parties tracked for ${country.name}: ${parties
+          .map((p) => `${p.name}${p.shortName ? ` (${p.shortName})` : ''}`)
+          .join(' | ')}.`
+      );
+      if (topic) {
+        const issues = getIssuesByCountry(country.id);
+        const issue = issues.find((item) => item.topicId === topic.id);
+        const positionLines = issue
+          ? parties.flatMap((party) =>
+              getPositionsForParty(country.id, party.id)
+                .filter((position) => position.issueId === issue.id)
+                .map(
+                  (position) =>
+                    `- ${party.shortName || party.name} on ${issue.label}: ${position.stance} — ${position.evidence}${
+                      position.source ? ` Source on file: ${position.source}.` : ''
+                    }`
+                )
+            )
+          : [];
+
+        if (positionLines.length > 0) {
+          lines.push(...positionLines);
+        } else {
+          lines.push(
+            `Party positions for ${topic.label} are available in the dedicated party comparison section.`
+          );
+        }
+      }
     }
   }
 

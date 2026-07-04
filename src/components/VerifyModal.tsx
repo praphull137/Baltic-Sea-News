@@ -13,14 +13,15 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  verifyClaim,
-  verifyUrl,
   verifyImage,
   verifyVideo,
   VerificationResult,
   VerdictTone,
 } from '@/lib/verification';
 import { extractVideoFrames } from '@/lib/videoFrames';
+import { runEvidenceVerification } from '@/services/verificationEngine';
+import { EvidenceVerificationResult } from '@/services/types';
+import EvidenceResultPanel from './verification/EvidenceResultPanel';
 
 type Mode = 'claim' | 'url' | 'image' | 'video';
 
@@ -59,6 +60,7 @@ const VerifyModal: React.FC<VerifyModalProps> = ({
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [result, setResult] = useState<VerificationResult | null>(null);
+  const [evidenceResult, setEvidenceResult] = useState<EvidenceVerificationResult | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
@@ -69,6 +71,7 @@ const VerifyModal: React.FC<VerifyModalProps> = ({
       setTextValue(initialValue);
       setStatus('idle');
       setResult(null);
+      setEvidenceResult(null);
       setErrorMessage('');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,6 +98,7 @@ const VerifyModal: React.FC<VerifyModalProps> = ({
   const runVerification = async () => {
     setErrorMessage('');
     setResult(null);
+    setEvidenceResult(null);
 
     if (mode === 'claim' && !textValue.trim()) return;
     if (mode === 'url' && !textValue.trim()) return;
@@ -105,9 +109,15 @@ const VerifyModal: React.FC<VerifyModalProps> = ({
     try {
       let verdict: VerificationResult;
       if (mode === 'claim') {
-        verdict = await verifyClaim(textValue.trim());
+        const evidence = await runEvidenceVerification(textValue.trim());
+        setEvidenceResult(evidence);
+        setStatus('done');
+        return;
       } else if (mode === 'url') {
-        verdict = await verifyUrl(textValue.trim());
+        const evidence = await runEvidenceVerification(textValue.trim());
+        setEvidenceResult(evidence);
+        setStatus('done');
+        return;
       } else if (mode === 'image') {
         const dataUrl = await readFileAsDataUrl(imageFile as File);
         verdict = await verifyImage(dataUrl);
@@ -129,6 +139,7 @@ const VerifyModal: React.FC<VerifyModalProps> = ({
   const reset = () => {
     setStatus('idle');
     setResult(null);
+    setEvidenceResult(null);
     setErrorMessage('');
   };
 
@@ -314,7 +325,14 @@ const VerifyModal: React.FC<VerifyModalProps> = ({
               )}
 
               {/* Result */}
-              {status === 'done' && result && (
+              {status === 'done' && evidenceResult && (
+                <EvidenceResultPanel
+                  result={evidenceResult}
+                  onReset={reset}
+                />
+              )}
+
+              {status === 'done' && result && !evidenceResult && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}

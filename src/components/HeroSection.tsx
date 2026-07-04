@@ -39,7 +39,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
   return (
       <section
-        id="map"
+        id="home"
         className="relative min-h-[calc(100vh-64px)] flex items-center justify-center bg-[#f2e8dc] text-black overflow-hidden pt-20 pb-8 dark:bg-[#1f2937] dark:text-gray-300"
       >
       {/* Animated Icons */}
@@ -73,17 +73,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 mx-auto w-full max-w-[1760px] px-4 sm:px-6 lg:px-14">
+      <div className="relative z-10 mx-auto w-full max-w-[1920px] px-6 sm:px-8 lg:px-16 xl:px-20">
 
-        <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center xl:gap-16">
+        <div className="grid gap-14 lg:grid-cols-[1.12fr_0.88fr] lg:items-center xl:gap-20">
           {/* Left column: hero text, search, CTAs, stats */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="mx-auto max-w-2xl text-center lg:mx-0 lg:max-w-3xl lg:text-left"
+            className="mx-auto max-w-3xl text-center lg:mx-0 lg:max-w-4xl lg:text-left"
           >
-            <motion.h1 className="text-4xl md:text-5xl xl:text-[3.4rem] font-extrabold mb-5 font-poppins leading-[1.12]">
+            <motion.h1 className="text-4xl md:text-5xl xl:text-[3.9rem] font-extrabold mb-5 font-poppins leading-[1.08]">
               <motion.span
                 className="inline-block text-black dark:text-gray-100"
                 initial={{ opacity: 0, x: -100, rotate: -180 }}
@@ -131,7 +131,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl text-gray-800 mb-6 max-w-xl mx-auto lg:mx-0 leading-relaxed dark:text-gray-300"
+              className="text-lg md:text-xl text-gray-800 mb-6 max-w-2xl mx-auto lg:mx-0 leading-relaxed dark:text-gray-300"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
@@ -142,7 +142,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
             {/* Verification search area */}
             <motion.div
-              className="mx-auto lg:mx-0 max-w-xl rounded-2xl border border-gray-300 bg-white/90 p-4 shadow-md text-left dark:bg-[#111827] dark:border-gray-700"
+              className="mx-auto lg:mx-0 max-w-2xl rounded-2xl border border-gray-300 bg-white/90 p-5 shadow-md text-left dark:bg-[#111827] dark:border-gray-700"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.85 }}
@@ -209,7 +209,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Button
                     onClick={() => onVerify(mode, inputValue.trim() || undefined)}
-                    className="w-full sm:w-auto bg-[#487f7b] px-6 py-3 text-base font-semibold text-white shadow-md hover:bg-[#3a6a68] dark:bg-teal-500 dark:hover:bg-teal-600"
+                    className="w-full sm:w-auto bg-[#487f7b] px-7 py-3 text-base font-semibold text-white shadow-md hover:bg-[#3a6a68] dark:bg-teal-500 dark:hover:bg-teal-600"
                   >
                     Verify
                   </Button>
@@ -224,23 +224,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
             >
-              {/* <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => onVerify(mode, inputValue.trim() || undefined)}
                   size="lg"
-                  className="bg-[#487f7b] text-white px-8 py-4 text-lg font-semibold rounded-md shadow-md transition-all duration-300 hover:bg-[#3a6a68] dark:bg-teal-500 dark:hover:bg-teal-600"
+                  className="bg-[#487f7b] text-white px-9 py-4 text-lg font-semibold rounded-md shadow-md transition-all duration-300 hover:bg-[#3a6a68] dark:bg-teal-500 dark:hover:bg-teal-600"
                 >
                   Verify News
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-              </motion.div> */}
+              </motion.div>
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={onDemoClick}
                   variant="outline"
                   size="lg"
-                  className="border border-[#487f7b] text-[#487f7b] px-8 py-4 text-lg font-semibold rounded-md transition-all duration-300 hover:bg-[#487f7b]/10 dark:border-teal-400 dark:text-teal-400 dark:hover:bg-teal-400/20"
+                  className="border border-[#487f7b] text-[#487f7b] px-9 py-4 text-lg font-semibold rounded-md transition-all duration-300 hover:bg-[#487f7b]/10 dark:border-teal-400 dark:text-teal-400 dark:hover:bg-teal-400/20"
                 >
                   Explore Demo
                 </Button>
@@ -252,7 +252,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Right column: Interactive Baltic & Nordic News Map */}
           {/* Right column: Interactive Baltic & Nordic News Map */}
           <motion.div
-            className="flex justify-center lg:justify-end"
+            className="flex justify-center lg:justify-end lg:scale-[1.04] xl:scale-[1.08] origin-center"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
